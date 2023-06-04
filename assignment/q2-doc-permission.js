@@ -44,7 +44,7 @@ class Permission{
             throw new Error("This class cannot be instantiated");
         }
         this.#role = role;
-        this.#operation = operation
+        this.#operation = operation;
     }
 
     // function
@@ -73,3 +73,69 @@ class Permission{
 }
 
 // Add code here
+
+
+
+ class Document extends Permission { //(referenced and taught by Justen)
+
+    #content = null;
+
+    constructor(role, operation, content) {
+        super(role, operation);
+        this.#content = content;
+    }
+
+    process() {
+        const checkPermission = this.check();
+
+        if (checkPermission == true){
+            return "Allowed";
+        }
+        else{
+            return "Blocked";
+        }
+    }
+}
+ 
+
+ /*class Document extends Permission{ //the extends keyword allows document to get all the properties and functions of the permission class (from terence)
+
+    #content = null; //Good practice for a class's variable is to have initial value
+
+    constructor(role, operation, content){ // special function used to create an instance of the class (object)
+
+        super(role, operation); //Uses Premission's constructor
+        this.#content = content; //this in this contect means the Document's #content
+    }
+
+    process(){
+        this.check() ? console.log("Allowed") : console.log("Blocked"); // this is this context is the Document's check function that it got from the Permission class
+        console.log("Process content", this.#content);
+    }
+
+}*/
+
+ 
+//Test Cases Senario (referenced and taught by Justen)
+const d1 = new Document(
+    Permission.RolesConst.EDITOR,
+    Permission.OperationsConst.UPDATE,
+    "Hello content"
+);
+
+console.log(d1.process()); //"Allowed"
+
+const d2 = new Document(
+    Permission.RolesConst.READER,
+    Permission.OperationsConst.UPDATE,
+    "Hello content"
+);
+console.log(d2.process()); //"Blocked"
+
+const d3 = new Document(
+    Permission.RolesConst.OWNER,
+    Permission.OperationsConst.DELETE,
+    "Hello content"
+);
+console.log(d3.process()); // "Allowed"
+
